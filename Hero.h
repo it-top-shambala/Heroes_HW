@@ -1,42 +1,57 @@
 #ifndef HEROES_HERO_H
 #define HEROES_HERO_H
-
+#include "Race/Elf.h"
+#include "Race/Orc.h"
+#include "Weapon/Axe.h"
+#include "Weapon/Bow.h"
+#include "Specialization/Specialization.h"
+#include "Race/Race.h"
+#include "Specialization/Warrior.h"
+#include "Specialization/Archer.h"
+#include "Weapon/Hands.h"
 #include <string>
-
-#include "Weapon.h"
 
 using namespace std;
 
 class Hero {
-protected:
-    int _health;
-    string _name;
-
-    Weapon* weapon;
-
-    Hero(const string &name) : _name(name) {}
-
+private:
+    Race* HeroRace;
+    Specialization* HeroSpec;
+    Weapon* HeroWeapon = new Hands;
+    int HeroHP;
+    int HeroDamage;
 public:
-    const string& GetName() const {
-        return _name;
-    }
-
-    void SetHealth(int health) {
-        if (health <= 0) {
-            _health = 0;
-        } else {
-            _health = health;
+    Hero(string NameRace, string NameSpec){
+        if (NameRace == "Elf"){
+            HeroRace = new Elf;
+            HeroHP = HeroRace->GetHP();
         }
+        else if (NameRace == "Orc"){
+            HeroRace = new Orc;
+            HeroHP = HeroRace->GetHP();
+        }
+        if (NameSpec == "Warrior"){
+            HeroSpec = new Warrior;
+            HeroDamage = HeroSpec->GetDamage();
+        }
+        else if(NameSpec == "Archer"){
+            HeroSpec = new Archer;
+            HeroDamage = HeroSpec->GetDamage();}
+    }
 
-        // _health = health <= 0 ? 0 : health;
-    }
-    int GetHealth() {
-        return _health;
+    int ShowHeroDmg(){return HeroDamage + HeroWeapon->GetDamage();}
+    int ShowHeroHP(){return HeroHP;}
+
+    void SetWeapon(string WeaponName){
+        if (WeaponName == "Bow") {HeroWeapon = new Bow;}
+        else if (WeaponName == "Axe") {HeroWeapon = new Axe;}
     }
 
-    bool IsDeath() {
-        return _health == 0;
+    void Attack(Hero& Enemy){
+        Enemy.HeroHP -= HeroDamage + HeroWeapon->GetDamage();
     }
+
 };
+
 
 #endif //HEROES_HERO_H
