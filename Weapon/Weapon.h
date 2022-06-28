@@ -4,14 +4,10 @@
 using namespace std;
 
 class Weapon {
-protected:
-    int _damage;
-
 public:
-    int GetDamage() {
-        return _damage;
-    }
+    virtual int GetDamage()=0;
 };
+
 
 
 #endif //HEROES_WEAPON_H
